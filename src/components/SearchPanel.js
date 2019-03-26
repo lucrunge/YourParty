@@ -2,7 +2,7 @@ import React from 'react';
 import spotifyApi from '../api/Spotify';
 
 import SongCardList from './SongCardList';
-import SearchBar from './SearchBargi';
+import SearchBar from './SearchBar';
 
 class SearchPanel extends React.Component {
     state = {
@@ -32,17 +32,6 @@ class SearchPanel extends React.Component {
         });
     };
 
-    setPlayingTrack = async(uri) => {
-        return spotifyApi(
-            {
-                url: "/me/player/play",
-                method: "PUT",
-                headers: { Authorization: "Bearer " + this.state.token },
-                data: { "uris": [uri] }
-            }
-        )
-    };
-
     testApi = async (term) => {
         await this.getTrack(term);
         await this.getTrackDetails();
@@ -53,7 +42,7 @@ class SearchPanel extends React.Component {
         return (
                 <div className="ui segment search-view">
                     <SearchBar onSubmit={this.testApi}/>
-                    <SongCardList onPlay={this.setPlayingTrack} songs={this.state.results}></SongCardList>
+                    <SongCardList addSongToPlaylist={this.props.addSongToPlaylist} songs={this.state.results} withAddButton={true}></SongCardList>
                 </div>
         )
     };

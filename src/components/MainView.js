@@ -1,26 +1,64 @@
 import React from 'react';
-import SearchPanel from './SearchPanel';
 import {Router,
     Route,
     Link
 } from "react-router-dom";
 import history from '../history';
+import spotifyApi from "../api/Spotify";
+import yourPartyApi from "../api/YourPartyApi";
+import SearchPanel from './SearchPanel';
+import PlaylistPanel from './PlaylistPanel'
+import GroupIdPanel from "./GroupIdPanel";
 
 class MainView extends React.Component {
     state = {
         token: this.props.token.token.access_token,
         groupId: this.props.groupId,
         host: this.props.host,
+        playlist: []
     };
 
-    addSongToPlaylist = async() => {
+    addSongToPlaylist = async(name, artistName, imageUrl, spotifyUri, spotifyId) => {
+        return yourPartyApi(
+            {
+                url: "/api/group/add/" + this.state.groupId,
+                method: "POST",
+                headers: { Authorization: "Bearer " + this.state.token },
+                data: { name: name,
+                        artistName: artistName,
+                        imageUrl: imageUrl,
+                        spotifyUri: spotifyUri,
+                        spotifyID: spotifyId
+                }
+            }
+        )
+    };
 
-    }
+    setPlayingTrack = async(uri) => {
+        return spotifyApi(
+            {
+                url: "/me/player/play",
+                method: "PUT",
+                headers: { Authorization: "Bearer " + this.state.token },
+                data: { "uris": [uri] }
+            }
+        )
+    };
+
+
+    setPauseTrack = async() => {
+        return spotifyApi(
+            {
+                url: "/me/player/pause",
+                method: "PUT",
+                headers: { Authorization: "Bearer " + this.state.token },
+            }
+        )
+    };
 
     componentDidMount() {
-        console.log(this.state.host)
         history.push("/home/playlist");
-    }
+    };
 
     render() {
         return (
@@ -31,12 +69,9 @@ class MainView extends React.Component {
                         <Link className="item" to="/home/search">Search</Link>
                         <Link className="item" to="/home/mood">Mood</Link>
                     </div>
-                    <div style={{marginBottom: "10px"}}>
-                        <div className="ui grey image label">
-                                {this.state.host.display_name}'s party
-                                <div className="detail">{this.state.groupId}</div>
-                        </div>
-                    </div>
+
+                    <GroupIdPanel host={this.state.host} groupId={this.state.groupId}/>
+
                     <div className="item-display">
                     <Route
                         path="/home/search"
@@ -45,6 +80,20 @@ class MainView extends React.Component {
                                 token={this.state.token}
                                 groupId={this.state.groupId}
                                 host={this.state.host}
+                                addSongToPlaylist={this.addSongToPlaylist}
+                            />
+                        )}
+                    />
+                    <Route
+                        path="/home/playlist"
+                        component={() => (
+                            <PlaylistPanel
+                                token={this.state.token}
+                                groupId={this.state.groupId}
+                                host={this.state.host}
+                                playlist={this.state.playlist}
+                                setPlayingTrack={this.setPlayingTrack}
+                                setPauseTrack={this.setPauseTrack}
                             />
                         )}
                     />

@@ -5,7 +5,7 @@ import {Router,
 import history from '../history';
 import LoginView from './LoginView';
 import MainView from "./MainView";
-import "./style.css";
+import "../styles/style.css";
 
 
 class App extends React.Component {
