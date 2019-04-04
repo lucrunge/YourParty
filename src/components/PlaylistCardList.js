@@ -3,7 +3,7 @@ import React from 'react';
 import '../styles/SongCardList.css'
 import SongCard from './SongCard';
 
-class PlaylistCards extends React.Component {
+class PlaylistCardList extends React.Component {
     render() {
         const songs = this.props.songs.map(song => {
             return <SongCard key={song.spotifyID}
@@ -20,4 +20,4 @@ class PlaylistCards extends React.Component {
 
 };
 
-export default PlaylistCards;
+export default PlaylistCardList;

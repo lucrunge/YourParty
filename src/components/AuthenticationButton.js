@@ -14,7 +14,8 @@ class AuthenticationButton extends React.Component {
         const host = await this.getHostName();
         const groupId = await this.createGroup(host);
         const token = this.state.token;
-        const itemsToPass = {token, host, groupId};
+        const isHost = true;
+        const itemsToPass = {token, host, groupId, isHost};
         await this.props.onLogin(itemsToPass)
     };
 

@@ -1,0 +1,8 @@
+.music-player {
+    display: flex;
+    flex-direction: row;
+}
+
+.music-player div {
+    margin-left: 10px;
+}

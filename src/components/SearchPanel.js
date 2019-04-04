@@ -12,7 +12,7 @@ class SearchPanel extends React.Component {
         results: []
     };
 
-    getTrack = async(term) => {
+    getTracks = async(term) => {
         const trackResponse = await spotifyApi.get('/search', {
             params: { q: term, type: "track" },
             headers: { Authorization: "Bearer " + this.state.token}
@@ -20,28 +20,14 @@ class SearchPanel extends React.Component {
         this.setState({results: trackResponse.data.tracks.items})
     };
 
-    getTrackDetails = async() => {
-        return await spotifyApi.get('/audio-features/' + this.state.results[0].id, {
-            headers: { Authorization: "Bearer " + this.state.token}
-        });
-    };
-
-    getCurrentPlayingTrack = async() => {
-        return await spotifyApi.get('/me/player/currently-playing', {
-            headers: { Authorization: "Bearer " + this.state.token}
-        });
-    };
-
-    testApi = async (term) => {
-        await this.getTrack(term);
-        await this.getTrackDetails();
-        await this.getCurrentPlayingTrack();
+    onSubmit = async (term) => {
+        await this.getTracks(term);
     };
 
     renderContent = () => {
         return (
                 <div className="ui segment search-view">
-                    <SearchBar onSubmit={this.testApi}/>
+                    <SearchBar onSubmit={this.onSubmit}/>
                     <SongCardList addSongToPlaylist={this.props.addSongToPlaylist} songs={this.state.results} withAddButton={true}></SongCardList>
                 </div>
         )

@@ -9,11 +9,16 @@ import "../styles/style.css";
 
 
 class App extends React.Component {
-    state = { token: '', groupId: '', host: '', loggedIn: false};
+    state = { token: '', groupId: '', host: '', isHost: false, loggedIn: false};
 
     getLoginData = async (props) => {
-        this.setState({loggedIn: true, token: props.token, groupId: props.token.groupId.data, host: props.token.host} );
-        history.replace("/")
+        this.setState({loggedIn: true, token: props.token.token.access_token, groupId: props.token.groupId.data, host: props.token.host, isHost: props.token.isHost} );
+        history.replace("/");
+    };
+
+    getJoinData = async(groupId) => {
+        this.setState({loggedIn: true, token: '', groupId: groupId, isHost: false} );
+        history.replace("/");
     };
 
     render() {
@@ -28,12 +33,11 @@ class App extends React.Component {
                                 history.replace("/login")
                             ) : (
                                 history.replace("/home")
-                            )
-                        }
+                            )}
                     />
                     <Route
                         path="/login"
-                        component={() => <LoginView onLogin={this.getLoginData} />}
+                        component={() => <LoginView onLogin={this.getLoginData} onJoin={this.getJoinData}/>}
                     />
                     <Route
                         path="/home"
@@ -42,6 +46,7 @@ class App extends React.Component {
                                 token={this.state.token}
                                 groupId={this.state.groupId}
                                 host={this.state.host}
+                                isHost={this.state.isHost}
                             />
                         )}
                     />

@@ -1,24 +1,34 @@
-import React from 'react';
+import React from "react";
 import {Router,
     Route,
     Link
 } from "react-router-dom";
-import history from '../history';
+import history from "../history";
 import spotifyApi from "../api/Spotify";
 import yourPartyApi from "../api/YourPartyApi";
-import SearchPanel from './SearchPanel';
-import PlaylistPanel from './PlaylistPanel'
+import SearchPanel from "./SearchPanel";
+import PlaylistPanel from "./PlaylistPanel"
 import GroupIdPanel from "./GroupIdPanel";
+import MoodPanel from "./MoodPanel";
 
 class MainView extends React.Component {
     state = {
-        token: this.props.token.token.access_token,
+        token: this.props.token,
         groupId: this.props.groupId,
         host: this.props.host,
+        isHost: this.props.isHost,
+        isPlaying: false,
         playlist: []
     };
 
+    setPlayState = () => {
+        console.log('play')
+        // this.state.isPlaying ? this.setState({isPlay: false}) : this.setState({isPlay: true})
+    };
+
     addSongToPlaylist = async(name, artistName, imageUrl, spotifyUri, spotifyId) => {
+        const features = await this.getTrackDetails(spotifyId);
+        console.log(features);
         return yourPartyApi(
             {
                 url: "/api/group/add/" + this.state.groupId,
@@ -28,8 +38,27 @@ class MainView extends React.Component {
                         artistName: artistName,
                         imageUrl: imageUrl,
                         spotifyUri: spotifyUri,
-                        spotifyID: spotifyId
+                        spotifyID: spotifyId,
+                        danceability: features.danceability,
+                        energy: features.energy
                 }
+            }
+        )
+    };
+
+    getTrackDetails = async(id) => {
+        const features = await spotifyApi.get('/audio-features/' + id, {
+            headers: { Authorization: "Bearer " + this.state.token}
+        });
+        return features.data
+    };
+
+    removeFirstSongFromPlaylist = async() => {
+        return yourPartyApi(
+            {
+                url: "/api/group/removefirst/" + this.state.groupId,
+                method: "PUT",
+                headers: { Authorization: "Bearer " + this.state.token },
             }
         )
     };
@@ -91,9 +120,23 @@ class MainView extends React.Component {
                                 token={this.state.token}
                                 groupId={this.state.groupId}
                                 host={this.state.host}
+                                isHost={this.state.isHost}
                                 playlist={this.state.playlist}
+                                isPlaying={this.state.isPlaying}
                                 setPlayingTrack={this.setPlayingTrack}
                                 setPauseTrack={this.setPauseTrack}
+                                removeFirstSongFromPlaylist={this.removeFirstSongFromPlaylist}
+                                setPlayState={this.setPlayState}
+                            />
+                        )}
+                    />
+                    <Route
+                        path="/home/mood"
+                        component={() => (
+                            <MoodPanel
+                                token={this.state.token}
+                                groupId={this.state.groupId}
+                                host={this.state.host}
                             />
                         )}
                     />
