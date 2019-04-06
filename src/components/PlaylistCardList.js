@@ -12,10 +12,10 @@ class PlaylistCardList extends React.Component {
                              name={song.name}
                              artists={[song.artistName]}
                              coverArt={song.imageUrl}
-                             withAddButton = {this.props.withAddButton}/>
+                             withAddButton={this.props.withAddButton}/>
         });
 
-        return <div className="ui list song-list" >{songs}</div>
+        return <div className="ui list song-list">{songs}</div>
     }
 
 };

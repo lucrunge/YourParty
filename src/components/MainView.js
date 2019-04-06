@@ -1,5 +1,6 @@
 import React from "react";
-import {Router,
+import {
+    Router,
     Route,
     Link
 } from "react-router-dom";
@@ -15,7 +16,7 @@ class MainView extends React.Component {
     state = {
         token: this.props.token,
         groupId: this.props.groupId,
-        host: this.props.host,
+        hostName: this.props.hostName,
         isHost: this.props.isHost,
         isPlaying: false,
         playlist: []
@@ -26,61 +27,62 @@ class MainView extends React.Component {
         // this.state.isPlaying ? this.setState({isPlay: false}) : this.setState({isPlay: true})
     };
 
-    addSongToPlaylist = async(name, artistName, imageUrl, spotifyUri, spotifyId) => {
+    addSongToPlaylist = async (name, artistName, imageUrl, spotifyUri, spotifyId) => {
         const features = await this.getTrackDetails(spotifyId);
         console.log(features);
         return yourPartyApi(
             {
-                url: "/api/group/add/" + this.state.groupId,
+                url: "/group/add/" + this.state.groupId,
                 method: "POST",
-                headers: { Authorization: "Bearer " + this.state.token },
-                data: { name: name,
-                        artistName: artistName,
-                        imageUrl: imageUrl,
-                        spotifyUri: spotifyUri,
-                        spotifyID: spotifyId,
-                        danceability: features.danceability,
-                        energy: features.energy
+                headers: {Authorization: "Bearer " + this.state.token},
+                data: {
+                    name: name,
+                    artistName: artistName,
+                    imageUrl: imageUrl,
+                    spotifyUri: spotifyUri,
+                    spotifyID: spotifyId,
+                    danceability: features.danceability,
+                    energy: features.energy
                 }
             }
         )
     };
 
-    getTrackDetails = async(id) => {
+    getTrackDetails = async (id) => {
         const features = await spotifyApi.get('/audio-features/' + id, {
-            headers: { Authorization: "Bearer " + this.state.token}
+            headers: {Authorization: "Bearer " + this.state.token}
         });
         return features.data
     };
 
-    removeFirstSongFromPlaylist = async() => {
+    removeFirstSongFromPlaylist = async () => {
         return yourPartyApi(
             {
-                url: "/api/group/removefirst/" + this.state.groupId,
+                url: "/group/removefirst/" + this.state.groupId,
                 method: "PUT",
-                headers: { Authorization: "Bearer " + this.state.token },
+                headers: {Authorization: "Bearer " + this.state.token},
             }
         )
     };
 
-    setPlayingTrack = async(uri) => {
+    setPlayingTrack = async (uri) => {
         return spotifyApi(
             {
                 url: "/me/player/play",
                 method: "PUT",
-                headers: { Authorization: "Bearer " + this.state.token },
-                data: { "uris": [uri] }
+                headers: {Authorization: "Bearer " + this.state.token},
+                data: {"uris": [uri]}
             }
         )
     };
 
 
-    setPauseTrack = async() => {
+    setPauseTrack = async () => {
         return spotifyApi(
             {
                 url: "/me/player/pause",
                 method: "PUT",
-                headers: { Authorization: "Bearer " + this.state.token },
+                headers: {Authorization: "Bearer " + this.state.token},
             }
         )
     };
@@ -99,47 +101,47 @@ class MainView extends React.Component {
                         <Link className="item" to="/home/mood">Mood</Link>
                     </div>
 
-                    <GroupIdPanel host={this.state.host} groupId={this.state.groupId}/>
+                    <GroupIdPanel hostName={this.state.hostName} groupId={this.state.groupId}/>
 
                     <div className="item-display">
-                    <Route
-                        path="/home/search"
-                        component={() => (
-                            <SearchPanel
-                                token={this.state.token}
-                                groupId={this.state.groupId}
-                                host={this.state.host}
-                                addSongToPlaylist={this.addSongToPlaylist}
-                            />
-                        )}
-                    />
-                    <Route
-                        path="/home/playlist"
-                        component={() => (
-                            <PlaylistPanel
-                                token={this.state.token}
-                                groupId={this.state.groupId}
-                                host={this.state.host}
-                                isHost={this.state.isHost}
-                                playlist={this.state.playlist}
-                                isPlaying={this.state.isPlaying}
-                                setPlayingTrack={this.setPlayingTrack}
-                                setPauseTrack={this.setPauseTrack}
-                                removeFirstSongFromPlaylist={this.removeFirstSongFromPlaylist}
-                                setPlayState={this.setPlayState}
-                            />
-                        )}
-                    />
-                    <Route
-                        path="/home/mood"
-                        component={() => (
-                            <MoodPanel
-                                token={this.state.token}
-                                groupId={this.state.groupId}
-                                host={this.state.host}
-                            />
-                        )}
-                    />
+                        <Route
+                            path="/home/search"
+                            component={() => (
+                                <SearchPanel
+                                    token={this.state.token}
+                                    groupId={this.state.groupId}
+                                    hostName={this.state.hostName}
+                                    addSongToPlaylist={this.addSongToPlaylist}
+                                />
+                            )}
+                        />
+                        <Route
+                            path="/home/playlist"
+                            component={() => (
+                                <PlaylistPanel
+                                    token={this.state.token}
+                                    groupId={this.state.groupId}
+                                    hostName={this.state.hostName}
+                                    isHost={this.state.isHost}
+                                    playlist={this.state.playlist}
+                                    isPlaying={this.state.isPlaying}
+                                    setPlayingTrack={this.setPlayingTrack}
+                                    setPauseTrack={this.setPauseTrack}
+                                    removeFirstSongFromPlaylist={this.removeFirstSongFromPlaylist}
+                                    setPlayState={this.setPlayState}
+                                />
+                            )}
+                        />
+                        <Route
+                            path="/home/mood"
+                            component={() => (
+                                <MoodPanel
+                                    token={this.state.token}
+                                    groupId={this.state.groupId}
+                                    hostName={this.state.hostName}
+                                />
+                            )}
+                        />
                     </div>
                 </div>
             </Router>

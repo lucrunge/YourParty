@@ -4,7 +4,7 @@ import '../styles/SongCardList.css'
 import SongCard from './SongCard';
 
 class SongCardList extends React.Component {
-    state = { addSongToPlaylist: this.props.addSongToPlaylist};
+    state = {addSongToPlaylist: this.props.addSongToPlaylist};
 
     render() {
         const songs = this.props.songs.map(song => {
@@ -15,10 +15,10 @@ class SongCardList extends React.Component {
                              name={song.name}
                              artists={song.artists}
                              coverArt={song.album.images[0].url}
-                             withAddButton = {this.props.withAddButton}/>
+                             withAddButton={this.props.withAddButton}/>
         });
 
-        return <div className="ui list song-list" >{songs}</div>
+        return <div className="ui list song-list">{songs}</div>
     }
 
 };

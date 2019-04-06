@@ -2,6 +2,7 @@ import React from 'react';
 import PlaylistCardList from "./PlaylistCardList";
 import MusicPlayer from "./MusicPlayer";
 import yourPartyApi from "../api/YourPartyApi";
+import spotifyApi from "../api/Spotify";
 
 class PlaylistPanel extends React.Component {
     state = {
@@ -17,12 +18,11 @@ class PlaylistPanel extends React.Component {
         setInterval(this.getPlaylist, 5000);
     }
 
-    getPlaylist = async() => {
+    getPlaylist = async () => {
         const playlist = await yourPartyApi(
             {
-                url: "/api/group/playlist/" + this.state.groupId,
+                url: "/group/playlist/" + this.state.groupId,
                 method: "GET",
-                headers: { Authorization: "Bearer " + this.state.token },
             }
         );
         this.setState({playlist: playlist.data});
@@ -32,6 +32,7 @@ class PlaylistPanel extends React.Component {
         if (this.state.isHost) {
             return (
                 <MusicPlayer
+                    token={this.state.token}
                     playlist={this.state.playlist}
                     setPlayingTrack={this.props.setPlayingTrack}
                     setPauseTrack={this.props.setPauseTrack}

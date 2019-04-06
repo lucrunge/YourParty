@@ -7,13 +7,12 @@ const headerTextJoin = "Did you bring the drinks?";
 const dividerTextJoin = "Enter group code";
 
 
-
 class LoginView extends React.Component {
 
     state = {joiningGroup: false, term: ''};
 
     onLogin = responseToken => {
-        this.props.onLogin( { token: responseToken });
+        this.props.onLogin({token: responseToken});
     };
 
     onJoin = () => {

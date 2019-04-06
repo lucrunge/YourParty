@@ -10,11 +10,18 @@ class SongCard extends React.Component {
             <div className="ui item">
                 <img alt="Album cover" className="ui middle aligned tiny image" src={this.props.coverArt}/>
                 <div className="content">
-                    <div className="header"> {this.props.name} </div>
-                    <div className="description"> {this.props.artists[0].name} </div>
+                    <div className="header" style={{
+                        width: "140px",
+                        wordWrap: "break-word"
+                    }}> {this.props.name} </div>
+                    <div className="description" style={{
+                        width: "140px",
+                        wordWrap: "break-word"
+                    }}>{this.props.artists[0].name}</div>
                 </div>
-                { this.props.withAddButton ?
-                    <button className="ui primary button" style={{float: "right"}} onClick={this.addSongToPlaylist}>Add</button> :
+                {this.props.withAddButton ?
+                    <button className="ui primary button" style={{float: "right", position: "relative"}}
+                            onClick={this.addSongToPlaylist}>Add</button> :
                     <div/>
                 }
                 <div className="ui fitted divider"></div>

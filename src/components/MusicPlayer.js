@@ -1,11 +1,35 @@
 import React from 'react';
 import '../styles/MusicPlayer.css'
+import spotifyApi from "../api/Spotify";
 
 class MusicPlayer extends React.Component {
     state = {
+        token: this.props.token,
         isPlaying: this.props.isPlaying,
         songName: 'No song playing',
         artistName: ''
+    };
+
+    componentDidMount() {
+        setInterval(this.playNextSong, 5000)
+    }
+
+    playNextSong = async () => {
+        if (this.state.isPlaying) {
+            const response = await spotifyApi(
+                {
+                    url: "/me/player",
+                    method: "GET",
+                    headers: {Authorization: "Bearer " + this.state.token},
+                }
+            );
+            if (!response.data.is_playing) {
+                this.props.setPlayingTrack(this.props.playlist[0].spotifyUri);
+                await this.props.removeFirstSongFromPlaylist();
+                this.setState({songName: this.props.playlist[0].name, artistName: this.props.playlist[0].artistName});
+                this.props.refreshPlaylist();
+            }
+        }
     };
 
     onPlayStopClick = async () => {
@@ -16,7 +40,8 @@ class MusicPlayer extends React.Component {
             this.props.setPlayingTrack(this.props.playlist[0].spotifyUri);
             await this.props.removeFirstSongFromPlaylist();
             this.setState({songName: this.props.playlist[0].name, artistName: this.props.playlist[0].artistName})
-        };
+        }
+        ;
         this.state.isPlaying ? this.setState({isPlaying: false}) : this.setState({isPlaying: true})
         this.props.refreshPlaylist();
     };
