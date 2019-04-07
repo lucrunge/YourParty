@@ -24,10 +24,15 @@ class MusicPlayer extends React.Component {
                 }
             );
             if (!response.data.is_playing) {
-                this.props.setPlayingTrack(this.props.playlist[0].spotifyUri);
-                await this.props.removeFirstSongFromPlaylist();
-                this.setState({songName: this.props.playlist[0].name, artistName: this.props.playlist[0].artistName});
-                this.props.refreshPlaylist();
+                if (this.props.playlist[0] !== undefined) {
+                    this.props.setPlayingTrack(this.props.playlist[0].spotifyUri);
+                    await this.props.removeFirstSongFromPlaylist();
+                    this.setState({
+                        songName: this.props.playlist[0].name,
+                        artistName: this.props.playlist[0].artistName
+                    });
+                    this.props.refreshPlaylist();
+                }
             }
         }
     };
@@ -37,9 +42,11 @@ class MusicPlayer extends React.Component {
             this.props.setPauseTrack();
             this.setState({songName: 'No song playing', artistName: ''})
         } else {
-            this.props.setPlayingTrack(this.props.playlist[0].spotifyUri);
-            await this.props.removeFirstSongFromPlaylist();
-            this.setState({songName: this.props.playlist[0].name, artistName: this.props.playlist[0].artistName})
+            if (this.props.playlist[0] !== undefined) {
+                this.props.setPlayingTrack(this.props.playlist[0].spotifyUri);
+                await this.props.removeFirstSongFromPlaylist();
+                this.setState({songName: this.props.playlist[0].name, artistName: this.props.playlist[0].artistName})
+            }
         }
         ;
         this.state.isPlaying ? this.setState({isPlaying: false}) : this.setState({isPlaying: true})

@@ -11,15 +11,17 @@ class MoodPanel extends React.Component {
     renderContent = () => {
         return (
             <div className="ui segment search-view">
-                <div className="ui large buttons">
-                    <button className="ui button">Dance</button>
-                    <div className="or"></div>
-                    <button className="ui button">No dance</button>
-                </div>
-                <div className="ui large buttons">
-                    <button className="ui button">Energy</button>
-                    <div className="or"></div>
-                    <button className="ui button">No energy</button>
+                <div style={{display: "flex", flexDirection: "column", width: "50%"}}>
+                    <div className="ui large buttons">
+                        <button className="ui button">Dance</button>
+                        <div className="or"></div>
+                        <button className="ui button">No dance</button>
+                    </div>
+                    <div className="ui large buttons">
+                        <button className="ui button">Energy</button>
+                        <div className="or"></div>
+                        <button className="ui button">No energy</button>
+                    </div>
                 </div>
             </div>
         )

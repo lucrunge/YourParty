@@ -6,11 +6,12 @@ import SongCard from './SongCard';
 class PlaylistCardList extends React.Component {
     render() {
         const songs = this.props.songs.map(song => {
+            const artists = [{name: song.artistName}];
             return <SongCard key={song.spotifyID}
                              uri={song.spotifyUri}
                              id={song.spotifyID}
                              name={song.name}
-                             artists={[song.artistName]}
+                             artists={artists}
                              coverArt={song.imageUrl}
                              withAddButton={this.props.withAddButton}/>
         });
