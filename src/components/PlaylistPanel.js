@@ -2,7 +2,6 @@ import React from 'react';
 import PlaylistCardList from "./PlaylistCardList";
 import MusicPlayer from "./MusicPlayer";
 import yourPartyApi from "../api/YourPartyApi";
-import spotifyApi from "../api/Spotify";
 
 class PlaylistPanel extends React.Component {
     state = {

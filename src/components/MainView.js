@@ -23,8 +23,7 @@ class MainView extends React.Component {
     };
 
     setPlayState = () => {
-        console.log('play')
-        // this.state.isPlaying ? this.setState({isPlay: false}) : this.setState({isPlay: true})
+        this.state.isPlaying ? this.setState({isPlaying: false}) : this.setState({isPlaying: true});
     };
 
     addSongToPlaylist = async (name, artistName, imageUrl, spotifyUri, spotifyId) => {
