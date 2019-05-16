@@ -19,11 +19,18 @@ class MainView extends React.Component {
         hostName: this.props.hostName,
         isHost: this.props.isHost,
         isPlaying: false,
+        hasSubmitted: false,
+        modalIsOpen: false,
         playlist: []
     };
 
     setPlayState = () => {
         this.state.isPlaying ? this.setState({isPlaying: false}) : this.setState({isPlaying: true});
+    };
+
+    setSubmitState = (b) => {
+        this.setState({hasSubmitted: b})
+        console.log("resetted submit button")
     };
 
     addSongToPlaylist = async (name, artistName, imageUrl, spotifyUri, spotifyId) => {
@@ -75,7 +82,6 @@ class MainView extends React.Component {
         )
     };
 
-
     setPauseTrack = async () => {
         return spotifyApi(
             {
@@ -85,6 +91,12 @@ class MainView extends React.Component {
             }
         )
     };
+
+    toggleModal = () => {
+        this.setState({
+            modalIsOpen: !this.state.modalIsOpen
+        });
+    }
 
     componentDidMount() {
         history.push("/home/playlist");
@@ -138,6 +150,8 @@ class MainView extends React.Component {
                                     token={this.state.token}
                                     groupId={this.state.groupId}
                                     hostName={this.state.hostName}
+                                    hasSubmitted={this.state.hasSubmitted}
+                                    setSubmitState={this.setSubmitState}
                                 />
                             )}
                         />

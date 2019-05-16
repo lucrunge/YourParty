@@ -9,7 +9,8 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.5",
     "react-spotify-login": "^0.9.1",
-    "react-spotify-player": "^1.0.4"
+    "react-spotify-player": "^1.0.4",
+    "semantic-ui-react": "^0.87.1"
   },
   "scripts": {
     "start": "react-scripts start",

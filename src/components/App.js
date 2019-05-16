@@ -26,7 +26,6 @@ class App extends React.Component {
 
     getJoinData = async (groupId) => {
         const group = await yourPartyApi.get('/group/' + groupId);
-        console.log(group)
         this.setState({
             loggedIn: true,
             token: group.data.token,
@@ -34,7 +33,6 @@ class App extends React.Component {
             groupId: group.data.id,
             isHost: false
         });
-        console.log(this.state.hostName)
         history.replace("/");
     };
 

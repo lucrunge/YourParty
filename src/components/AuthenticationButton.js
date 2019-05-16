@@ -39,7 +39,9 @@ class AuthenticationButton extends React.Component {
                     "id": "",
                     "hostName": hostName,
                     "token": this.state.token.access_token,
-                    "songList": []
+                    "songList": [],
+                    "energyVotes": [],
+                    "danceVotes": []
                 }
             }
         );
