@@ -92,12 +92,6 @@ class MainView extends React.Component {
         )
     };
 
-    toggleModal = () => {
-        this.setState({
-            modalIsOpen: !this.state.modalIsOpen
-        });
-    }
-
     componentDidMount() {
         history.push("/home/playlist");
     };

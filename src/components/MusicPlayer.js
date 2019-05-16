@@ -47,7 +47,8 @@ class MusicPlayer extends React.Component {
                 await this.props.removeFirstSongFromPlaylist();
                 this.setState({songName: this.props.playlist[0].name, artistName: this.props.playlist[0].artistName})
             }
-        };
+        }
+        ;
         this.state.isPlaying ? this.setState({isPlaying: false}) : this.setState({isPlaying: true})
         this.props.refreshPlaylist();
     };
